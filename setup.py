@@ -1,0 +1,41 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="SolDi2T",
+    version="0.1.0",
+    author="Houssam Metni",
+    author_email="houssam.metni@kit.edu",
+    description="Solar Differentiable Digital Twin",
+    long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
+    url="https://github.com/hmetni/SolDi2T",
+    packages=find_packages(where="src"),
+    package_dir={"": "src"},
+    install_requires=[
+        "setuptools<81",
+        "numpy==2.2.4",
+        "scipy==1.15.2",
+        "pandas==2.2.3",
+        "jax==0.5.2",
+        "jaxlib==0.5.1",
+        "flax==0.10.4",
+        "jaxopt==0.8.3",
+        "autograd==1.7.0",
+        "scikit-learn==1.5.2",
+        "matplotlib==3.10.1",
+        "seaborn==0.13.2",
+        "meow-sim==0.12.0",
+        "tidy3d==2.7.9",
+        "interpax==0.3.7",
+        "openpyxl>=3.1.2",
+        "klujax==0.4.1",
+        "xarray==2025.1.2",
+        "sax==0.14.7"
+    ],
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ],
+    python_requires=">=3.8",
+)
