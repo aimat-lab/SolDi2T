@@ -8,7 +8,7 @@ Please follow the following instructions for installation
 ``conda activate SolDi2T``
 
 ## Clone the repository
-``git clone https://github.com/hmetni/SolDi2T.git``
+``git clone https://github.com/aimat-lab/SolDi2T.git``
 
 ``cd SolDi2T``
 
