@@ -68,6 +68,9 @@ CE = CE_value * jnp.ones(A.shape[0])
 # Calculate Jsc from irradiance
 Jsc_direct, Jsc_diffuse, Jsc, S = JscCalc_jax(thetasun, phisun, IdirN, IdifN, A, tilt_angle, rotation_angle, CE, S)
 
+#Jsc = pd.read_csv('Jsc_300.csv', header=None).values
+#S = pd.read_csv('S.csv',header=None).values
+
 # Calculate the temperature of the module
 temp_module = jnp.zeros((8760, A.shape[0]))
 
@@ -84,6 +87,9 @@ suns_values = S/1000
 
 # Convert temperature from Celsius to Kelvin
 T_values = temp_module + 273.15
+
+#T_values = jnp.zeros((8760, 1))
+#T_values = T_values.at[0, 0].set(298.15)
 
 # Initialize arrays to store voc and ff values
 voc_values = jnp.zeros(len(S))

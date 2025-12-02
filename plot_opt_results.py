@@ -9,13 +9,22 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes, mark_inset
 import numpy.ma as ma
+# # for plotting
+# textwidth = 455.2 / 72 * 1.2
+# import matplotlib as mpl
+# # Set the font to Computer Modern Roman
+# mpl.rcParams['font.family'] = 'sans-serif'
+# mpl.rcParams['font.serif'] = 'Arial' # 'Computer Modern Roman'
+# # Use LaTeX to format text
+# mpl.rcParams['text.usetex'] = True
+# mpl.rcParams.update({'font.size': 9.8})
 
 # -----------------------------
 # Setup
 # -----------------------------
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "src")))
 
-location = 'honolulu'
+location = 'phoenix'
 fontsize = 24
 fontsize2 = 24
 with_zoom = True
@@ -47,11 +56,17 @@ levels = np.linspace(power_min, power_max, num_levels)
 fig, ax = plt.subplots(figsize=(18, 8))
 contour = ax.contourf(X, Y, Z, cmap='viridis', alpha=1, levels=levels)
 cbar = plt.colorbar(contour, ax=ax)
-cbar.set_label(r'Energy Yield (kWh/$m^{2}/a$)', fontsize=fontsize)
+#cbar.set_label(r'Energy Yield (kWh/$m^{2}/a$)', fontsize=fontsize)
 cbar.ax.tick_params(labelsize=fontsize)
 
-ax.set_xlabel('Thickness (nm)', fontsize=fontsize)
-ax.set_ylabel('Tilt Angle (degrees)', fontsize=fontsize)
+# Custom ticks only
+custom_ticks = np.arange(130, 231, 20)
+cbar.set_ticks(custom_ticks)
+cbar.set_ticklabels([f"{t:.0f}" for t in custom_ticks])
+#cbar.set_ticklabels([rf"\text{{{int(t)}}}" for t in custom_ticks])
+#ax.set_xlabel('Thickness (nm)', fontsize=fontsize)
+#ax.set_ylabel('Tilt Angle (degrees)', fontsize=fontsize)
+
 
 # -----------------------------
 # Plot gradient ascent trajectories
@@ -92,6 +107,19 @@ for i, result in enumerate(all_results):
         best_thickness = thick_h[local_max_idx]
         best_tilt = tilt_h[local_max_idx]
 
+# from matplotlib.patches import Rectangle
+
+# zoom_rect = Rectangle(
+#     (160, 15),        # (x1, y1)
+#     240 - 160,        # width
+#     35 - 15,          # height
+#     fill=False,
+#     edgecolor='black',
+#     linewidth=1.0,
+#     linestyle='-'
+# )
+# ax.add_patch(zoom_rect)
+
 ax.legend(fontsize=fontsize - 4, loc='upper right')
 ax.set_xlim([100, 300])
 ax.set_ylim([0, 90])
@@ -116,6 +144,7 @@ ax.quiver(X_grad, Y_grad, grad_X * 0.5, grad_Y * 0.5, color='black', scale=50, a
 
 fig.tight_layout()
 fig.savefig(f'data/results/{location}/gradient_ascent_full.png', dpi=300, bbox_inches='tight')
+fig.savefig(f'data/results/{location}/gradient_ascent_full.pdf', dpi=300, bbox_inches='tight')
 plt.show()
 
 # -----------------------------
@@ -123,7 +152,7 @@ plt.show()
 # -----------------------------
 if with_zoom:
     x1, x2 = 160, 240
-    y1, y2 = 10, 35
+    y1, y2 = 15, 35
 
     fig2, ax2 = plt.subplots(figsize=(18, 6))
     idxx1 = np.argmin(np.abs(X[0] - x1))
@@ -140,7 +169,12 @@ if with_zoom:
     )
 
     cbar2 = plt.colorbar(contour_zoom, ax=ax2)
-    cbar2.set_label(r'Energy Yield (kWh/$m^{2}/a$)', fontsize=fontsize2)
+    #cbar2.set_label(r'Energy Yield (kWh/$m^{2}/a$)', fontsize=fontsize2)
+    #cbar2.ax.tick_params(labelsize=fontsize2)
+    # Use the same style as the main colorbar, but with zoomed tick range
+    custom_ticks_zoom = np.arange(232, 243, 2)   # 232 → 242
+    cbar2.set_ticks(custom_ticks_zoom)
+    cbar2.set_ticklabels([f"{t:.0f}" for t in custom_ticks_zoom])
     cbar2.ax.tick_params(labelsize=fontsize2)
 
     for i, result in enumerate(all_results):
@@ -165,10 +199,11 @@ if with_zoom:
 
     ax2.set_xlim(x1, x2)
     ax2.set_ylim(y1, y2)
-    ax2.set_xlabel('Thickness (nm)', fontsize=fontsize2)
-    ax2.set_ylabel('Tilt Angle (degrees)', fontsize=fontsize2)
+    #ax2.set_xlabel('Thickness (nm)', fontsize=fontsize2)
+    #ax2.set_ylabel('Tilt Angle (degrees)', fontsize=fontsize2)
     ax2.tick_params(axis='both', which='major', labelsize=fontsize2)
 
     fig2.tight_layout()
     fig2.savefig(f'data/results/{location}/gradient_ascent_zoomed_full.png', dpi=300, bbox_inches='tight')
+    fig2.savefig(f'data/results/{location}/gradient_ascent_zoomed_full.pdf', dpi=300, bbox_inches='tight')
     plt.show()

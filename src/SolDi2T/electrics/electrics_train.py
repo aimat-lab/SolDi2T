@@ -16,6 +16,11 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "src")))
 from SolDi2T.electrics.model_utils import MultiOutputNN, load_data_with_thickness, save_model
 
+
+plt.rcParams["xtick.labelsize"] = 18
+plt.rcParams["ytick.labelsize"] = 18
+fontsize=18
+
 # List of files and corresponding thickness values
 filenames = [
     "data/electrics/102nm.h5",
@@ -122,7 +127,7 @@ y_test_ff = scaler_ff.inverse_transform(y_test_scaled[:, [2]])
 y_test = np.concatenate([y_test_voc, y_test_jsc, y_test_ff], axis=1)
 
 # Evaluate the model using KDE plots
-metrics_names = ['Voc', 'Jsc', 'FF']
+metrics_names = ['Voc [V]', 'Jsc', 'FF']
 
 
 # Save the model to a file
@@ -134,10 +139,10 @@ logging.info("Model saved successfully.")
 plt.figure(figsize=(10, 6))
 plt.plot(range(n_epochs), train_losses, label="Training Loss")
 plt.plot(range(n_epochs), val_losses, label="Validation Loss")
-plt.xlabel("Epoch")
-plt.ylabel("Loss")
-plt.title("Training and Validation Loss over Epochs")
-plt.legend()
+plt.xlabel("Epoch", fontsize=fontsize)
+plt.ylabel("Loss", fontsize=fontsize)
+#plt.title("Training and Validation Loss over Epochs")
+plt.legend(fontsize=fontsize)
 # Save loss curve
 plt.savefig("data/electrics/elec_loss_curve.png", dpi=300, bbox_inches="tight")
 plt.show()
@@ -150,9 +155,9 @@ for i, name in enumerate(metrics_names):
     plt.figure(figsize=(5, 5))
     sns.kdeplot(x=real, y=pred, fill=True, cmap="Blues", thresh=0.05)
     plt.plot([real.min(), real.max()], [real.min(), real.max()], 'k--', lw=2)
-    plt.title(f"{name}: Real vs Predicted\nR² = {r2:.2f}")
-    plt.xlabel(f"Real {name}")
-    plt.ylabel(f"Predicted {name}")
+    #plt.title(f"{name}: Real vs Predicted\nR² = {r2:.2f}")
+    plt.xlabel(f"Real {name}", fontsize=fontsize)
+    plt.ylabel(f"Predicted {name}", fontsize=fontsize)
     plt.axis('square')
 
     # Save each figure
