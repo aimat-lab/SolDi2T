@@ -1,6 +1,9 @@
 # Sol(Di)²T: A Differentiable Digital Twin Framework for Solar Cell Energy Yield Optimization
+![Project Overview](overview.png)
 
-Please follow the following instructions for installation
+Sol(Di)²T (a **So**lar **Di**fferentiable **Di**gital Twin) is a differentiable digital twin framework for solar cells that predicts the total energy yield of a given device architecture and material choice. It supports data-driven decision-making and accelerates development and optimization, making it relevant for industrial R&D, scale-up, and application-specific PV design.
+
+Please follow the following instructions for installation.
 
 ## Create and activate the conda environment
 ``conda create -n SolDi2T python=3.13 -y``
@@ -15,8 +18,26 @@ Please follow the following instructions for installation
 ## Install the project
 ``pip install .``
 
-This [Zenodo link](https://zenodo.org/records/17790703?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6ImU4MmRkNTViLTdhZDYtNGE0My05YzhiLWY3Mzg2ZDFkYjFkNiIsImRhdGEiOnt9LCJyYW5kb20iOiIzZDYyYTQxNTU5YmU1Zjg1YTAwNGE3YjM0OGRhZWExZCJ9.SyGwDC8WcHHE4iwM4PgrhcQrlSp1qeNC3IyBtO2uBR8kN-Ep-cDIyq1buRE6DlTmXpKiAEPobgDUQvelQ3jOHQ) contains the irradiance files necessary to reproduce the code in various locations (Honolulu, Seattle, Miami and Phoenix). To include these files, just extract the necessary ``.pkl`` files from the ``.zip`` file on the Zenodo link and put them in a defined ``data/irradiance/`` folder.
-
 ## Training the machine learning models
 To retrain the various machine learning models employed in this study, please consult the data available in the same [Zenodo link](https://zenodo.org/records/17790703?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6ImU4MmRkNTViLTdhZDYtNGE0My05YzhiLWY3Mzg2ZDFkYjFkNiIsImRhdGEiOnt9LCJyYW5kb20iOiIzZDYyYTQxNTU5YmU1Zjg1YTAwNGE3YjM0OGRhZWExZCJ9.SyGwDC8WcHHE4iwM4PgrhcQrlSp1qeNC3IyBtO2uBR8kN-Ep-cDIyq1buRE6DlTmXpKiAEPobgDUQvelQ3jOHQ).
 
+## Citation
+
+If you use this code or data in your research, please cite the following paper:
+
+> **Towards a fully differentiable digital twin for solar cells** > Marie Louise Schubert, Houssam Metni, et al. (2025).  
+> *arXiv preprint arXiv:2512.02904*.  
+> Available at: [https://arxiv.org/abs/2512.02904](https://arxiv.org/abs/2512.02904)
+
+**BibTeX:**
+
+```bibtex
+@misc{schubert2025fullydifferentiabledigitaltwin,
+      title={Towards a fully differentiable digital twin for solar cells}, 
+      author={Marie Louise Schubert and Houssam Metni and Jan David Fischbach and Benedikt Zerulla and Marjan Krstić and Ulrich W. Paetzold and Seyedamir Orooji and Olivier J. J. Ronsin and Yasin Ameslon and Jens Harting and Thomas Kirchartz and Sandheep Ravishankar and Chris Dreessen and Eunchi Kim and Christian Sprau and Mohamed Hussein and Alexander Colsmann and Karen Forberich and Klaus Jäger and Pascal Friederich and Carsten Rockstuhl},
+      year={2025},
+      eprint={2512.02904},
+      archivePrefix={arXiv},
+      primaryClass={physics.comp-ph},
+      url={[https://arxiv.org/abs/2512.02904](https://arxiv.org/abs/2512.02904)}, 
+}
