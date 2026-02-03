@@ -1,9 +1,13 @@
 # Sol(Di)²T: A Differentiable Digital Twin Framework for Solar Cell Energy Yield Optimization
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.13](https://img.shields.io/badge/python-3.13-blue.svg)](https://www.python.org/downloads/release/python-3130/)
+
 <p align="center">
   <img src="overview.png" alt="Project Overview" width="500"/>
 </p>
 
-Sol(Di)²T (a **So**lar **Di**fferentiable **Di**gital Twin) is a differentiable digital twin framework for solar cells that predicts the total energy yield of a given device architecture and material choice. It supports data-driven decision-making and accelerates development and optimization, making it relevant for industrial R&D, scale-up, and application-specific PV design.
+Sol(Di)²T (a **So**lar **Di**fferentiable **Di**gital **T**win) is a differentiable digital twin framework for solar cells that predicts the total energy yield of a given device architecture and material choice. It supports data-driven decision-making and accelerates development and optimization, making it relevant for industrial R&D, scale-up, and application-specific PV design.
 
 Please follow the following instructions for installation.
 
