@@ -11,7 +11,7 @@ import time
 # Add src to the Python path
 sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
 
-from SolDi2T.energy_yield.irradiance import trim_irradiance
+from SolDi2T.energy_yield.irradiance import trim_irradiance, get_irradiance_data
 from SolDi2T.energy_yield.jsc_calculation import JscCalc_jax
 from SolDi2T.optics.interpolate_absorption import (
     AbsorptionSurfaceModel,
@@ -20,6 +20,7 @@ from SolDi2T.optics.interpolate_absorption import (
 )
 from SolDi2T.electrics.model_utils import MultiOutputNN, load_model
 
+get_irradiance_data()
 # ==============================
 # User-defined constants
 # ==============================

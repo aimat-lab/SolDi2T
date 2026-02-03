@@ -4,6 +4,9 @@ import jax
 import jax.nn as jnn
 from jax.scipy.spatial.transform import Rotation  # Check if this is available in your environment
 import os
+import requests
+import zipfile
+import io
 
 degree = jnp.pi / 180
 
@@ -131,3 +134,36 @@ def get_illumination(alpha, beta, gamma):
     GI = jnp.flipud(GI)
 
     return GI
+
+def get_irradiance_data():
+    target_dir = 'data/irradiance'
+    
+    # 1. The official "Download All" link for the folder
+    url = "https://bwsyncandshare.kit.edu/s/rrXQn4fNxGpAHXn/download"
+
+    # Only download if the folder is missing or empty
+    if not os.path.exists(target_dir) or not os.listdir(target_dir):
+        print(f"Downloading data from {url}...")
+        
+        try:
+            response = requests.get(url)
+            response.raise_for_status() # Check for HTTP errors
+            
+            # Check if we actually got a ZIP file (and not a small error page)
+            if len(response.content) < 1000: 
+                print("Warning: Downloaded file is suspiciously small. Check the link.")
+
+            print("Extracting files...")
+            with zipfile.ZipFile(io.BytesIO(response.content)) as zip_ref:
+                zip_ref.extractall('data')
+                
+            print("Success! Files ready.")
+            
+        except Exception as e:
+            print(f"Error during download: {e}")
+            # Clean up partial bad downloads
+            if os.path.exists(target_dir):
+                import shutil
+                shutil.rmtree(target_dir)
+    else:
+        print("Files already exist. Skipping download.")

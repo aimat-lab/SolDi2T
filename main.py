@@ -9,12 +9,14 @@ import logging
 # Add src to the Python path
 sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
 
-from SolDi2T.energy_yield.irradiance import trim_irradiance
+from SolDi2T.energy_yield.irradiance import trim_irradiance, get_irradiance_data
 from SolDi2T.energy_yield.jsc_calculation import JscCalc_jax
 from SolDi2T.optics.interpolate_absorption import AbsorptionSurfaceModel, load_absorption_surface_model, predict_absorption_surface_NN
 from SolDi2T.electrics.model_utils import MultiOutputNN, load_model 
 
 import time
+
+get_irradiance_data()
 
 # Record the start time
 start_time = time.time()
