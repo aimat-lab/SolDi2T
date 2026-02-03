@@ -5,6 +5,8 @@
 
 <p align="center">
   <img src="overview.png" alt="Project Overview" width="500"/>
+  <br>
+  <em>Overview of the digital twin framework Sol(Di)²T.</em>
 </p>
 
 Sol(Di)²T (a **So**lar **Di**fferentiable **Di**gital **T**win) is a differentiable digital twin framework for solar cells that predicts the total energy yield of a given device architecture and material choice. It supports data-driven decision-making and accelerates development and optimization, making it relevant for industrial R&D, scale-up, and application-specific PV design.
