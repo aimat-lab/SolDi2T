@@ -15,7 +15,7 @@ os.environ["XLA_PYTHON_CLIENT_PREALLOCATE"] = "false"
 # -----------------------------
 # Setup
 # -----------------------------
-location = "seattle"
+location = "phoenix"
 opt_method = "gradient_ascent"
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -28,8 +28,8 @@ rotation_angle = 180.0
 CE_value = 0.84
 NOCT_value = 48.0
 
-thickness_range = np.arange(100.0, 320.0, 20.0)
-tilt_angles = np.arange(0.0, 100.0, 10.0)
+thickness_range = np.arange(0.0, 250.0, 40.0) # np.arange(100.0, 320.0, 20.0)
+tilt_angles = np.arange(0.0, 50.0, 10.0)
 
 initial_lr_tilt = 10.0
 decay_rate_tilt = 0.05
@@ -37,7 +37,7 @@ initial_lr_thickness = 50.0
 decay_rate_thickness = 0.1
 num_steps = 30
 min_tilt, max_tilt = 0.0, 90.0
-min_thickness, max_thickness = 100.0, 300.0
+min_thickness, max_thickness = 0.0, 250.0 # 100.0, 300.0
 
 # -----------------------------
 # Load irradiance and models
@@ -170,7 +170,8 @@ def optimize_from_start(tilt_start, thickness_start):
 # -----------------------------
 # Run optimization from multiple starting points
 # -----------------------------
-start_points = [(10.0, 125.0), (10.0, 275.0), (50.0, 125.0), (50.0, 275.0)]
+# start_points = [(10.0, 125.0), (10.0, 275.0), (50.0, 125.0), (50.0, 275.0)]
+start_points = [(0.0, 175.0), (0.0, 210.0), (0.0, 1.0)]
 #start_points = [(10.0, 125.0), (50.0, 275.0)]
 all_results = []
 start_time = time.time()
@@ -205,7 +206,7 @@ for res in all_results:
 filtered_trajectories = pd.DataFrame(trajectories)
 
 # Contour plot data
-pivot_table = pd.read_csv(f"{output_dir}/loop_results_with_gradients.csv").pivot(
+pivot_table = pd.read_csv(f"{output_dir}/loop_results_with_gradients_MLS.csv").pivot(
     index='Tilt Angle (degrees)', columns='Thickness (nm)', values='Power (kWh/m²/a)'
 )
 X, Y = np.meshgrid(pivot_table.columns, pivot_table.index)

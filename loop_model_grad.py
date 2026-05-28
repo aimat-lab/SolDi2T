@@ -35,7 +35,7 @@ rotation_angle = 180.0
 CE_value = 0.84
 NOCT_value = 48.0
 
-thickness_range = np.arange(100.0, 310.0, 10.0)  # nm
+thickness_range = np.arange(0.0, 310.0, 10.0) # np.arange(100.0, 310.0, 10.0)  # nm
 tilt_angles = np.arange(0.0, 100.0, 10.0)         # degrees
 
 # ==============================
@@ -174,7 +174,7 @@ results_df = pd.DataFrame(
         "Grad Thickness (kWh/nm)",
     ],
 )
-csv_path = os.path.join(output_dir, "loop_results_with_gradients.csv")
+csv_path = os.path.join(output_dir, "loop_results_with_gradients_MLS.csv")
 results_df.to_csv(csv_path, index=False)
 logging.info(f"✅ Saved results to {csv_path}")
 
@@ -235,7 +235,7 @@ ax.set_xlabel("Thickness (nm)")
 ax.set_ylabel("Tilt Angle (degrees)")
 ax.set_title(f"Power & Gradient Directions — {location.title()}")
 
-plot_path = os.path.join(output_dir, "contour_with_quiver.png")
+plot_path = os.path.join(output_dir, "contour_with_quiver_MLS.png")
 plt.savefig(plot_path, dpi=300, bbox_inches="tight")
 plt.show()
 logging.info(f"✅ Saved contour+quiver plot to {plot_path}")
