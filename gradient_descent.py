@@ -25,10 +25,10 @@ logging.info("Starting gradient ascent optimization script...")
 # User parameters
 # -----------------------------
 rotation_angle = 180.0
-CE_value = 0.84
+CE_value = 0.84             # conversion efficiency
 NOCT_value = 48.0
 
-thickness_range = np.arange(0.0, 250.0, 40.0) # np.arange(100.0, 320.0, 20.0)
+thickness_range = np.arange(10.0, 250.0, 40.0) # np.arange(100.0, 320.0, 20.0)
 tilt_angles = np.arange(0.0, 50.0, 10.0)
 
 initial_lr_tilt = 10.0
@@ -37,7 +37,7 @@ initial_lr_thickness = 50.0
 decay_rate_thickness = 0.1
 num_steps = 30
 min_tilt, max_tilt = 0.0, 90.0
-min_thickness, max_thickness = 0.0, 250.0 # 100.0, 300.0
+min_thickness, max_thickness = 10.0, 250.0 # 100.0, 300.0
 
 # -----------------------------
 # Load irradiance and models
@@ -99,6 +99,10 @@ def EYCalc_wrapper(tilt_angle, thickness_value):
         loaded_absorption_surface_scaler_X,
     )
 
+    print('A', A, type(A))
+    print("A shape:", A.shape)
+    print("len(A):", len(A)) 
+
     S = jnp.zeros(8760)
     NOCT = NOCT_value * jnp.ones(A.shape[0])
     CE = CE_value * jnp.ones(A.shape[0])
@@ -116,9 +120,11 @@ def EYCalc_wrapper(tilt_angle, thickness_value):
     )
     instances_scaled = (instances - jnp.array(loaded_scaler_X.mean_)) / jnp.array(loaded_scaler_X.scale_)
     pred_scaled = model.apply(loaded_params, instances_scaled)
+
     voc_preds = pred_scaled[:, 0] * loaded_scaler_voc.scale_ + loaded_scaler_voc.mean_
     ff_preds = pred_scaled[:, 2] * loaded_scaler_ff.scale_ + loaded_scaler_ff.mean_
-    jsc_values = Jsc.reshape(-1)
+    jsc_values = Jsc.reshape(-1) # why does it look differnt to voc and ff?
+
     power = 10 * voc_preds * ff_preds * jsc_values
     return jnp.sum(power) / 1000  # kWh/m²/a
 
@@ -171,7 +177,7 @@ def optimize_from_start(tilt_start, thickness_start):
 # Run optimization from multiple starting points
 # -----------------------------
 # start_points = [(10.0, 125.0), (10.0, 275.0), (50.0, 125.0), (50.0, 275.0)]
-start_points = [(0.0, 175.0), (0.0, 210.0), (0.0, 1.0)]
+start_points = [(0.0, 175.0), (0.0, 210.0), (10.0, 12.0)]
 #start_points = [(10.0, 125.0), (50.0, 275.0)]
 all_results = []
 start_time = time.time()
@@ -205,18 +211,18 @@ for res in all_results:
         })
 filtered_trajectories = pd.DataFrame(trajectories)
 
-# Contour plot data
-pivot_table = pd.read_csv(f"{output_dir}/loop_results_with_gradients_MLS.csv").pivot(
-    index='Tilt Angle (degrees)', columns='Thickness (nm)', values='Power (kWh/m²/a)'
-)
-X, Y = np.meshgrid(pivot_table.columns, pivot_table.index)
-Z = pivot_table.values
+# # Contour plot data
+# pivot_table = pd.read_csv(f"{output_dir}/loop_results_with_gradients_MLS.csv").pivot(
+#     index='Tilt Angle (degrees)', columns='Thickness (nm)', values='Power (kWh/m²/a)'
+# )
+# X, Y = np.meshgrid(pivot_table.columns, pivot_table.index)
+# Z = pivot_table.values
 
 fig, ax = plt.subplots(figsize=(18, 12))
-contour = ax.contourf(X, Y, Z, cmap='viridis', alpha=0.5, levels=100)
-cbar = plt.colorbar(contour, ax=ax)
-cbar.set_label('Energy Yield (kWh/m²/a)', fontsize=14)
-cbar.ax.tick_params(labelsize=14)
+# contour = ax.contourf(X, Y, Z, cmap='viridis', alpha=0.5, levels=100)
+# cbar = plt.colorbar(contour, ax=ax)
+# cbar.set_label('Energy Yield (kWh/m²/a)', fontsize=14)
+# cbar.ax.tick_params(labelsize=14)
 
 # Plot trajectories
 initial_conditions = filtered_trajectories[['Initial Tilt Angle', 'Initial Thickness']].drop_duplicates()
