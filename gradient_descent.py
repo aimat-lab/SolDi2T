@@ -28,8 +28,8 @@ rotation_angle = 180.0
 CE_value = 0.84             # conversion efficiency
 NOCT_value = 48.0
 
-thickness_range = np.arange(10.0, 250.0, 40.0) # np.arange(100.0, 320.0, 20.0)
-tilt_angles = np.arange(0.0, 50.0, 10.0)
+thickness_range = np.arange(100.0, 250.0, 1000.0) # np.arange(100.0, 250.0, 40.0) # np.arange(100.0, 320.0, 20.0)
+tilt_angles = np.arange(0.0, 50.0, 100.0)
 
 initial_lr_tilt = 10.0
 decay_rate_tilt = 0.05
@@ -37,7 +37,7 @@ initial_lr_thickness = 50.0
 decay_rate_thickness = 0.1
 num_steps = 30
 min_tilt, max_tilt = 0.0, 90.0
-min_thickness, max_thickness = 10.0, 250.0 # 100.0, 300.0
+min_thickness, max_thickness = 100.0, 250.0 # 100.0, 300.0
 
 # -----------------------------
 # Load irradiance and models

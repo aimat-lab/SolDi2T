@@ -141,7 +141,7 @@ def JscCalc_jax(thetasun0_0, phisun0_0, IdirN, IdifN, A, tilt_angle, rotation_an
         IdifN,  # Shape: (8760, 181)
         thetasun,  # Shape: (8760,)
         phisun,  # Shape: (8760,)
-        A,  # Shape: (2, 90, 181)
+        A,  # Shape: (2, 90, 181) (1,90,901)
         CE,  # Shape: (2,)
         GI,  # Shape: (90, 360)
         GI_inv,  # Shape: (90, 360)
