@@ -38,13 +38,30 @@ A = predict_absorption_surface_NN(target_thickness, loaded_absorption_surface_mo
 print('shape A (og)', np.shape(A))
 
 # # MLS new
-df = pd.read_csv("200nmPM6Y6_s_11Sept_2025.csv")
+from scipy.interpolate import interp1d
+df = pd.read_csv("100nmPM6Y6_p_11Sept_2025.csv")
+lambda_nn = np.arange(300, 1201, 1)  # 901 points, 1 nm steps
 
-df_theta0 = df[df["theta [deg]"] == 0].copy()
-df_theta0["wavelength_nm"] = df_theta0["vacuum wavelength [um]"] * 1000
-df_theta0 = df_theta0.sort_values("wavelength_nm")
-A = df["absorption in active material [unitless]"]
-print('shape A (new)', np.shape(A))
+A_grid = np.zeros((90, 901))
+
+for angle in range(90):
+    df_angle = df[df["theta [deg]"] == angle].copy()
+    df_angle["wavelength_nm"] = df_angle["vacuum wavelength [um]"] * 1000
+    df_angle = df_angle.sort_values("wavelength_nm")
+
+    wl_csv  = df_angle["wavelength_nm"].values
+    abs_csv = df_angle["absorption in active material [unitless]"].values
+
+    # Interpolate from 46 CSV points onto 901-point NN grid
+    f = interp1d(wl_csv, abs_csv, kind="linear",
+                 bounds_error=False, fill_value="extrapolate")
+    A_grid[angle, :] = f(lambda_nn)
+A_new = A_grid[np.newaxis, :, :]  # shape (1, 90, 901)
+
+A = A_new
+
+# print("shape A (og) :", np.shape(A))      # (1, 90, 901)
+print("shape A (new):", np.shape(A_new))  # (1, 90, 901)
 
 
 # Load irradiance data
