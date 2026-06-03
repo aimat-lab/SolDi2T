@@ -35,6 +35,16 @@ NOCT_value = 48.0 # nominal operating cell temperature, in °C
 loaded_absorption_surface_model, loaded_absorption_surface_params, loaded_absorption_surface_scaler_X = load_absorption_surface_model('data/absorption/absorption_surface_model.pkl')
 # Final absorption array
 A = predict_absorption_surface_NN(target_thickness, loaded_absorption_surface_model, loaded_absorption_surface_params, loaded_absorption_surface_scaler_X)
+print('shape A (og)', np.shape(A))
+
+# # MLS new
+df = pd.read_csv("200nmPM6Y6_s_11Sept_2025.csv")
+
+df_theta0 = df[df["theta [deg]"] == 0].copy()
+df_theta0["wavelength_nm"] = df_theta0["vacuum wavelength [um]"] * 1000
+df_theta0 = df_theta0.sort_values("wavelength_nm")
+A = df["absorption in active material [unitless]"]
+print('shape A (new)', np.shape(A))
 
 
 # Load irradiance data
