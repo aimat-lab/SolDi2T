@@ -58,7 +58,7 @@ for angle in range(90):
     A_grid[angle, :] = f(lambda_nn)
 A_new = A_grid[np.newaxis, :, :]  # shape (1, 90, 901)
 
-A = A_new
+# A = A_new
 
 # print("shape A (og) :", np.shape(A))      # (1, 90, 901)
 print("shape A (new):", np.shape(A_new))  # (1, 90, 901)

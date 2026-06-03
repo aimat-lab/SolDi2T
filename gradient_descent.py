@@ -177,7 +177,7 @@ def optimize_from_start(tilt_start, thickness_start):
 # Run optimization from multiple starting points
 # -----------------------------
 # start_points = [(10.0, 125.0), (10.0, 275.0), (50.0, 125.0), (50.0, 275.0)]
-start_points = [(0.0, 175.0), (0.0, 210.0), (10.0, 12.0)]
+start_points = [(0.0, 100.0), (0.0, 200.0), (10.0, 50.0)]
 #start_points = [(10.0, 125.0), (50.0, 275.0)]
 all_results = []
 start_time = time.time()
