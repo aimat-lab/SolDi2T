@@ -66,7 +66,7 @@ def compute_hour(carry, j):
     EY_diffuse_updated = EY_diffuse.at[j, 0].set(diffuse_0)
     EY_total_updated = EY_total.at[j, 0].set(direct_0 + diffuse_0)
     
-    for k in range(1,len(A)):
+    for k in range(1,len(A)): # should this maybe be done over all the different anlges?
         direct_k, diffuse_k = compute_k(k)
         EY_direct_updated = EY_direct_updated.at[j, k].set(direct_k)
         EY_diffuse_updated = EY_diffuse_updated.at[j, k].set(diffuse_k)
