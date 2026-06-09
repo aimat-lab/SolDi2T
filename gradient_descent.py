@@ -101,6 +101,7 @@ def EYCalc_wrapper(tilt_angle, thickness_value):
 
     # print('A', A, type(A))
     # print("A shape:", A.shape)
+    # print('needed shape: ', A.shape[0])
     # print("len(A):", len(A)) 
 
     S = jnp.zeros(8760)
@@ -124,6 +125,9 @@ def EYCalc_wrapper(tilt_angle, thickness_value):
     voc_preds = pred_scaled[:, 0] * loaded_scaler_voc.scale_ + loaded_scaler_voc.mean_
     ff_preds = pred_scaled[:, 2] * loaded_scaler_ff.scale_ + loaded_scaler_ff.mean_
     jsc_values = Jsc.reshape(-1) # why does it look differnt to voc and ff?
+
+    print(f'{voc_preds=}')
+    print(f'{ff_preds=}')
 
     power = 10 * voc_preds * ff_preds * jsc_values
     return jnp.sum(power) / 1000  # kWh/m²/a
