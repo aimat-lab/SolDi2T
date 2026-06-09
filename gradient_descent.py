@@ -6,11 +6,14 @@ import matplotlib.pyplot as plt
 import pickle
 import logging
 import time
+
+# Disable JAX preallocation
+os.environ["XLA_PYTHON_CLIENT_PREALLOCATE"] = "false"
+
 import jax
 import jax.numpy as jnp
 import gc
-# Disable JAX preallocation
-os.environ["XLA_PYTHON_CLIENT_PREALLOCATE"] = "false"
+
 
 # -----------------------------
 # Setup
