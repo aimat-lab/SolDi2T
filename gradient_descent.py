@@ -100,7 +100,7 @@ def EYCalc_wrapper(tilt_angle, thickness_value):
     )
 
     # print('A', A, type(A))
-    # print("A shape:", A.shape)
+    print("A shape:", A.shape)
     # print('needed shape: ', A.shape[0])
     # print("len(A):", len(A)) 
 
@@ -131,6 +131,7 @@ def EYCalc_wrapper(tilt_angle, thickness_value):
     print(f'{jsc_values=}')
 
     power = 10 * voc_preds * ff_preds * jsc_values
+    print('total power', jnp.sum(power) / 1000)
     return jnp.sum(power) / 1000  # kWh/m²/a
 
 grad_EYCalc = jax.grad(EYCalc_wrapper, argnums=(0, 1))
@@ -183,7 +184,7 @@ def optimize_from_start(tilt_start, thickness_start):
 # -----------------------------
 # start_points = [(10.0, 125.0), (10.0, 275.0), (50.0, 125.0), (50.0, 275.0)]
 # start_points = [(0.0, 100.0), (0.0, 200.0), (10.0, 50.0)]
-start_points = [(0.0, 220.0)]
+start_points = [(0.0, 100.0)]
 #start_points = [(10.0, 125.0), (50.0, 275.0)]
 all_results = []
 start_time = time.time()
