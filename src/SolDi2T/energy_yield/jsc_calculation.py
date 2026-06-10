@@ -8,14 +8,14 @@ import pickle
 from SolDi2T.energy_yield.irradiance import *
 
 # Initialize parameters
-lambda_ = jnp.arange(300, 1201, 1)
+# lambda_ = jnp.arange(300, 1201, 1)
 
 q, h, c = 1.6021766208e-19, 6.62607004e-34, 299792458
 const = q / (h * c) * 1e-10
 
 @jit
 def compute_hour(carry, j):
-    EY_direct, EY_diffuse, EY_total, IdirN, IdifN, thetasun, phisun, A, CE, GI, GI_inv, theta, dtheta, dphi, dlambda = carry
+    EY_direct, EY_diffuse, EY_total, IdirN, IdifN, thetasun, phisun, A, CE, GI, GI_inv, theta, lambda_, dtheta, dphi, dlambda = carry
 
     # Compute indices safely using JAX operations
     idx_phisun = jnp.mod(jnp.round(phisun[j]), 360).astype(jnp.int32)  # Scalar
@@ -86,14 +86,16 @@ def compute_hour(carry, j):
         GI,
         GI_inv,
         theta,
+        lambda_,
         dtheta,
         dphi,
         dlambda
     ), None
 
 @jit
-def JscCalc_jax(thetasun0_0, phisun0_0, IdirN, IdifN, A, tilt_angle, rotation_angle, CE, S):
-    
+def JscCalc_jax(thetasun0_0, phisun0_0, IdirN, IdifN, A, tilt_angle, rotation_angle, CE, S, lambda_=None):
+    if lambda_ is None:
+        lambda_ = jnp.arange(300, 1201, 1)
 
     # Constants
     theta = jnp.deg2rad(jnp.linspace(0, 89, 90))  # Shape: (90,)
@@ -146,6 +148,7 @@ def JscCalc_jax(thetasun0_0, phisun0_0, IdirN, IdifN, A, tilt_angle, rotation_an
         GI,  # Shape: (90, 360)
         GI_inv,  # Shape: (90, 360)
         theta,  # Shape: (90,)
+        lambda_,
         dtheta,  # Scalar
         dphi,  # Scalar
         dlambda  # Scalar
