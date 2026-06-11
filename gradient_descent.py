@@ -130,6 +130,10 @@ def EYCalc_wrapper(tilt_angle, thickness_value):
     print(f'{ff_preds=}')
     print(f'{jsc_values=}')
 
+    print('mean Voc:', jnp.mean(voc_preds))
+    print('mean FF:', jnp.mean(ff_preds))
+    print('mean Jsc:', jnp.mean(jsc_values))
+
     power = 10 * voc_preds * ff_preds * jsc_values
     print('total power', jnp.sum(power) / 1000)
     return jnp.sum(power) / 1000  # kWh/m²/a

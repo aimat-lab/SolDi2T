@@ -58,15 +58,15 @@ for angle in range(90):
     A_grid[angle, :] = f(lambda_nn)
 A_new = A_grid[np.newaxis, :, :]  # shape (1, 90, 901)
 
-A = A_new
+# A = A_new
 
 # print("shape A (og) :", np.shape(A))      # (1, 90, 901)
 print("shape A (new):", np.shape(A_new))  # (1, 90, 901)
 
-# from direct SAX calculation
-A_all = jnp.array(np.load('A_thickness_wl_901.npy')) # for import
-A = A_all[0]
-print(np.shape(A))
+# # from direct SAX calculation
+# A_all = jnp.array(np.load('A_thickness_wl_901.npy')) # for import
+# A = A_all[0]
+# print(np.shape(A))
 
 
 # Load irradiance data
@@ -161,6 +161,10 @@ power = (10 * voc_values * ff_values * jsc_values.squeeze())
 
 # Calculate total energy yield
 power_total = jnp.sum(power) / 1000
+
+print('mean Voc:', jnp.mean(voc_preds))
+print('mean FF:', jnp.mean(ff_preds))
+print('mean Jsc:', jnp.mean(jsc_values))
 
 # Calculate global irradiance
 Iglob = jnp.sum(IrradianceDifH + IrradianceDirN, axis=1)
