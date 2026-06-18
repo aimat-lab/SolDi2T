@@ -23,7 +23,7 @@ start_time = time.time()
 
 # Initialize parameters
 lambda_ = jnp.arange(300, 1201, 1)  # Wavelength range: 300 nm to 1200 nm in 1 nm steps
-target_thickness = 100.0 # active layer material thickness, in nm
+target_thickness = 100 # active layer material thickness, in nm
 location = 'phoenix' # location name
 tilt_angle = 0.0 # tilt angle in degrees
 rotation_angle = 180.0 # rotation angle in degrees
