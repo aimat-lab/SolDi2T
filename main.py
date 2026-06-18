@@ -23,9 +23,9 @@ start_time = time.time()
 
 # Initialize parameters
 lambda_ = jnp.arange(300, 1201, 1)  # Wavelength range: 300 nm to 1200 nm in 1 nm steps
-target_thickness = 200.0 # active layer material thickness, in nm
+target_thickness = 100 # active layer material thickness, in nm
 location = 'phoenix' # location name
-tilt_angle = 20.0 # tilt angle in degrees
+tilt_angle = 0.0 # tilt angle in degrees
 rotation_angle = 180.0 # rotation angle in degrees
 CE_value = 0.84 # collection efficiency
 NOCT_value = 48.0 # nominal operating cell temperature, in °C
@@ -35,6 +35,38 @@ NOCT_value = 48.0 # nominal operating cell temperature, in °C
 loaded_absorption_surface_model, loaded_absorption_surface_params, loaded_absorption_surface_scaler_X = load_absorption_surface_model('data/absorption/absorption_surface_model.pkl')
 # Final absorption array
 A = predict_absorption_surface_NN(target_thickness, loaded_absorption_surface_model, loaded_absorption_surface_params, loaded_absorption_surface_scaler_X)
+print('shape A (og)', np.shape(A))
+
+# # MLS new
+from scipy.interpolate import interp1d
+df = pd.read_csv("100nmPM6Y6_p_11Sept_2025.csv")
+lambda_nn = np.arange(300, 1201, 1)  # 901 points, 1 nm steps
+
+A_grid = np.zeros((90, 901))
+
+for angle in range(90):
+    df_angle = df[df["theta [deg]"] == angle].copy()
+    df_angle["wavelength_nm"] = df_angle["vacuum wavelength [um]"] * 1000
+    df_angle = df_angle.sort_values("wavelength_nm")
+
+    wl_csv  = df_angle["wavelength_nm"].values
+    abs_csv = df_angle["absorption in active material [unitless]"].values
+
+    # Interpolate from 46 CSV points onto 901-point NN grid
+    f = interp1d(wl_csv, abs_csv, kind="linear",
+                 bounds_error=False, fill_value="extrapolate")
+    A_grid[angle, :] = f(lambda_nn)
+A_new = A_grid[np.newaxis, :, :]  # shape (1, 90, 901)
+
+# A = A_new
+
+# print("shape A (og) :", np.shape(A))      # (1, 90, 901)
+print("shape A (new):", np.shape(A_new))  # (1, 90, 901)
+
+# # from direct SAX calculation
+# A_all = jnp.array(np.load('A_thickness_wl_901.npy')) # for import
+# A = A_all[0]
+# print(np.shape(A))
 
 
 # Load irradiance data
@@ -129,6 +161,10 @@ power = (10 * voc_values * ff_values * jsc_values.squeeze())
 
 # Calculate total energy yield
 power_total = jnp.sum(power) / 1000
+
+print('mean Voc:', jnp.mean(voc_preds))
+print('mean FF:', jnp.mean(ff_preds))
+print('mean Jsc:', jnp.mean(jsc_values))
 
 # Calculate global irradiance
 Iglob = jnp.sum(IrradianceDifH + IrradianceDirN, axis=1)

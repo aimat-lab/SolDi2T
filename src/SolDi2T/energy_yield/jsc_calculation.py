@@ -66,7 +66,7 @@ def compute_hour(carry, j):
     EY_diffuse_updated = EY_diffuse.at[j, 0].set(diffuse_0)
     EY_total_updated = EY_total.at[j, 0].set(direct_0 + diffuse_0)
     
-    for k in range(1,len(A)):
+    for k in range(1,len(A)): # over different numbers of absorbers
         direct_k, diffuse_k = compute_k(k)
         EY_direct_updated = EY_direct_updated.at[j, k].set(direct_k)
         EY_diffuse_updated = EY_diffuse_updated.at[j, k].set(diffuse_k)
@@ -141,7 +141,7 @@ def JscCalc_jax(thetasun0_0, phisun0_0, IdirN, IdifN, A, tilt_angle, rotation_an
         IdifN,  # Shape: (8760, 181)
         thetasun,  # Shape: (8760,)
         phisun,  # Shape: (8760,)
-        A,  # Shape: (2, 90, 181)
+        A,  # Shape: (2, 90, 181) (1,90,901)
         CE,  # Shape: (2,)
         GI,  # Shape: (90, 360)
         GI_inv,  # Shape: (90, 360)
